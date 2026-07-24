@@ -28,7 +28,7 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
 
     // Calculate the size of the UI
     // Height is header + content items + spacers + help text (1xcontent) + footer
-    auto height = headerHeight + contentItemHeight*numberOfContentItems + numberOfSpacers*separatorHeight + contentItemHeight;;
+    auto height = headerHeight + contentItemHeight*numberOfContentItems + numberOfSpacers*separatorHeight + contentItemHeight + separatorHeight;;
     if (enableInspector == true)
     {
         height += inspectButtonHeight + footerHeight;
@@ -56,16 +56,20 @@ ProgrammerEditor::ProgrammerEditor (ProgrammerProcessor& p)
         addAndMakeVisible(footerSeparator[col]);
         addAndMakeVisible(footerHelpLabel1[col]);
         addAndMakeVisible(footerHelpLabel2[col]);
+        addAndMakeVisible(footerHelpLabel3[col]);
         footerHelpLabel1[col].setJustificationType (juce::Justification::left);
         footerHelpLabel2[col].setJustificationType (juce::Justification::left);
+        footerHelpLabel3[col].setJustificationType (juce::Justification::left);
         footerHelpLabel1[col].setFont (juce::FontOptions (11.0f, juce::Font::plain));
         footerHelpLabel2[col].setFont (juce::FontOptions (11.0f, juce::Font::plain));
+        footerHelpLabel3[col].setFont (juce::FontOptions (11.0f, juce::Font::plain));
     }
     
     // Add header and footer text
     headerLabel[0].setText ("Play Modes", juce::dontSendNotification);
     footerHelpLabel1[0].setText ("Press and hold PGM_A to enter Program Pages. Hold PGM_B to exit.", juce::dontSendNotification);
     footerHelpLabel2[0].setText ("Ensure MIDI Output is set to interface connected to 0-Coast", juce::dontSendNotification);
+    footerHelpLabel3[0].setText ("v" VERSION, juce::dontSendNotification);
     headerLabel[1].setText ("Clocks", juce::dontSendNotification);
     headerLabel[2].setText ("MIDI A", juce::dontSendNotification);
     headerLabel[3].setText ("MIDI B", juce::dontSendNotification);
@@ -271,13 +275,14 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     // Calculate the header and footer areas
     headerFooterAreas[0][0] = area.removeFromTop (headerHeight);
     headerFooterAreas[0][1] = area.removeFromTop (separatorHeight);
-    headerFooterAreas[0][2] = area.removeFromBottom (contentItemHeight/2);
+    headerFooterAreas[0][2] = area.removeFromBottom (separatorHeight);
     headerFooterAreas[0][3] = area.removeFromBottom (contentItemHeight/2);
-    headerFooterAreas[0][4] = area.removeFromBottom (separatorHeight);
+    headerFooterAreas[0][4] = area.removeFromBottom (contentItemHeight/2);
+    headerFooterAreas[0][5] = area.removeFromBottom (separatorHeight);
     // For each remaining column, calculate the remaining header and footer areas
     for (size_t col = 1; col < static_cast<size_t>(numberOfColumns); ++col)
     {
-        for (size_t i = 0; i < static_cast<size_t>(5); ++i)
+        for (size_t i = 0; i < static_cast<size_t>(6); ++i)
         {
             headerFooterAreas[col][i] = headerFooterAreas[0][i];
             headerFooterAreas[col][i].setX (headerFooterAreas[0][i].getX() + ((int)col * (contentWidth + rightSidebarWidth)));
@@ -305,9 +310,10 @@ void ProgrammerEditor::paint (juce::Graphics& g)
     {
         headerLabel[col].setBounds(headerFooterAreas[col][0]);
         headerSeparator[col].setBounds(headerFooterAreas[col][1]);
-        footerHelpLabel1[col].setBounds(headerFooterAreas[col][2]);
-        footerHelpLabel2[col].setBounds(headerFooterAreas[col][3]);
-        footerSeparator[col].setBounds(headerFooterAreas[col][4]);
+        footerHelpLabel1[col].setBounds(headerFooterAreas[col][3]);
+        footerHelpLabel2[col].setBounds(headerFooterAreas[col][4]);
+        footerHelpLabel3[col].setBounds(headerFooterAreas[col][2]);
+        footerSeparator[col].setBounds(headerFooterAreas[col][5]);
     }
 
     // Draw content items for column 0

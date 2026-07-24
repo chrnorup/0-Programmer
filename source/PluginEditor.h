@@ -225,7 +225,7 @@ private:
     static constexpr int numberOfColumns = 4;
     // Bounding boxes for UI elements
     std::array<std::array<juce::Rectangle<int>, numberOfContentItems>, numberOfColumns> contentAreas;
-    std::array<std::array<juce::Rectangle<int>, 5>, numberOfColumns> headerFooterAreas;
+    std::array<std::array<juce::Rectangle<int>, 6>, numberOfColumns> headerFooterAreas;
 
     // UI Content Elements
     CustomComboBox arpEnable;
@@ -253,6 +253,7 @@ private:
     // Footer and Header Elements
     std::array<juce::Label, numberOfColumns> footerHelpLabel1;
     std::array<juce::Label, numberOfColumns> footerHelpLabel2;
+    std::array<juce::Label, numberOfColumns> footerHelpLabel3;
     std::array<HorizontalSeparator, numberOfColumns> headerSeparator;
     std::array<HorizontalSeparator, numberOfColumns> footerSeparator;
     std::array<juce::Label, numberOfColumns> headerLabel;
